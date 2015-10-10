@@ -66,7 +66,6 @@ public class MainActivity extends Activity {
         });
         noScrollGridView.setAdapter(adapter);
     }
-
     private void selectImgs(){
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(instence.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         menuWindow = new SelectPicPopupWindow(MainActivity.this, itemsOnClick);
