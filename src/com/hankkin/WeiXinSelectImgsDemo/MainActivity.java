@@ -47,7 +47,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         initViews();
     }
-
     private void initViews(){
         noScrollGridView = (NoScrollGridView) findViewById(R.id.noScrollgridview);
         noScrollGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
