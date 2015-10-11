@@ -1,9 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
+                android:orientation="vertical"
+              android:layout_width="match_parent"
                 android:layout_height="match_parent" >
+    <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentTop="true"
+            android:background="#e0000000"
+            android:clickable="true" >
+
+        <Button
+                android:id="@+id/btn_cancel"
+                android:background="@null"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dip"
+                android:text="取消"
+                android:textColor="@android:color/white" />
+
+        <Button
+                android:id="@+id/btn_ok"
+                android:background="@null"
+                android:layout_width="50dip"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="完成"
+                android:textColor="@android:color/white" />
+            <TextView
+                    android:layout_toRightOf="@+id/btn_ok"
+                    android:id="@+id/tv_look"
+                    android:layout_width="50dip"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="预览"
+                    android:textColor="@android:color/white" />
+    </RelativeLayout>
 
     <GridView
+
+            android:layout_marginTop="50dp"
             android:id="@+id/id_gridView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -18,14 +62,16 @@
     </GridView>
 
     <RelativeLayout
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
             android:id="@+id/id_bottom_ly"
             android:layout_width="match_parent"
             android:layout_height="50dip"
-            android:layout_alignParentBottom="true"
             android:background="#e0000000"
             android:clickable="true" >
 
         <TextView
+                android:layout_weight="1"
                 android:id="@+id/id_choose_dir"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -36,6 +82,7 @@
                 android:text="所有图片"
                 android:textColor="@android:color/white" />
 
+
         <TextView
                 android:id="@+id/id_total_count"
                 android:layout_width="50dip"
@@ -45,6 +92,7 @@
                 android:gravity="center"
                 android:text="0张"
                 android:textColor="@android:color/white" />
+
     </RelativeLayout>
 
 </RelativeLayout>

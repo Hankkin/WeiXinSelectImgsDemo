@@ -1,14 +1,23 @@
 package com.hankkin.WeiXinSelectImgsDemo.adapter;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
+import com.hankkin.WeiXinSelectImgsDemo.AlbumActivity;
 import com.hankkin.WeiXinSelectImgsDemo.R;
+import com.hankkin.WeiXinSelectImgsDemo.model.ImageBean;
+import com.hankkin.WeiXinSelectImgsDemo.utils.Bimp;
+import com.hankkin.WeiXinSelectImgsDemo.utils.BitmapUtils;
 import com.hankkin.WeiXinSelectImgsDemo.utils.ViewHolder;
 
 
@@ -24,12 +33,14 @@ public class MyAdapter extends CommonAdapter<String>
 	 * 文件夹路径
 	 */
 	private String mDirPath;
+	private Context context;
 
 	public MyAdapter(Context context, List<String> mDatas, int itemLayoutId,
 			String dirPath)
 	{
 		super(context, mDatas, itemLayoutId);
 		this.mDirPath = dirPath;
+		this.context = context;
 	}
 
 	@Override
@@ -61,12 +72,40 @@ public class MyAdapter extends CommonAdapter<String>
 					mSelectedImage.remove(mDirPath + "/" + item);
 					mSelect.setImageResource(R.drawable.picture_unselected);
 					mImageView.setColorFilter(null);
+					List<ImageBean> delete = new ArrayList<ImageBean>();
+					for (ImageBean im:Bimp.tempSelectBitmap){
+						if (im.getPath().equals(mDirPath + "/" + item)){
+							delete.add(im);
+						}
+					}
+					Bimp.tempSelectBitmap.removeAll(delete);
+					Message msg = new Message();
+					msg.what=0;
+					AlbumActivity.handler.sendMessage(msg);
 				} else
 				// 未选择该图片
 				{
-					mSelectedImage.add(mDirPath + "/" + item);
-					mSelect.setImageResource(R.drawable.pictures_selected);
-					mImageView.setColorFilter(Color.parseColor("#77000000"));
+					if (Bimp.tempSelectBitmap.size()>8){
+						Toast.makeText(context,"超出可选图片数",Toast.LENGTH_SHORT).show();
+						return;
+					}
+					else {
+						mSelectedImage.add(mDirPath + "/" + item);
+						mSelect.setImageResource(R.drawable.pictures_selected);
+						mImageView.setColorFilter(Color.parseColor("#77000000"));
+						ImageBean imageBean = new ImageBean();
+						imageBean.setPath(mDirPath + "/" + item);
+						try {
+							imageBean.setBitmap(Bimp.revitionImageSize(mDirPath + "/" + item));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						Bimp.tempSelectBitmap.add(imageBean);
+						Message msg = new Message();
+						msg.what=0;
+						AlbumActivity.handler.sendMessage(msg);
+					}
+
 				}
 
 			}

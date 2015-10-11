@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.hankkin.WeiXinSelectImgsDemo.adapter.MyAdapter;
 import com.hankkin.WeiXinSelectImgsDemo.model.ImageFloder;
 import com.hankkin.WeiXinSelectImgsDemo.popwindow.ListImageDirPopupWindow;
 import android.view.ViewGroup.LayoutParams;
+import com.hankkin.WeiXinSelectImgsDemo.utils.Bimp;
 
 
 import java.io.File;
@@ -65,7 +68,9 @@ public class AlbumActivity extends Activity implements ListImageDirPopupWindow.O
 
     private TextView mChooseDir;
     private TextView mImageCount;
+    private TextView tvLook;
     int totalCount = 0;
+    private Button btnOK,btnCancel;
 
     private int mScreenHeight;
 
@@ -82,6 +87,7 @@ public class AlbumActivity extends Activity implements ListImageDirPopupWindow.O
             initListDirPopupWindw();
         }
     };
+    public static Handler handler;
 
     /**
      * 为View绑定数据
@@ -144,6 +150,16 @@ public class AlbumActivity extends Activity implements ListImageDirPopupWindow.O
         initView();
         getImages();
         initEvent();
+
+        handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==0){
+                btnOK.setText("完成"+"(" + Bimp.tempSelectBitmap.size() + "/"+ 9+")");
+            }
+        }
+    };
 
     }
 
@@ -256,6 +272,36 @@ public class AlbumActivity extends Activity implements ListImageDirPopupWindow.O
         mImageCount = (TextView) findViewById(R.id.id_total_count);
 
         mBottomLy = (RelativeLayout) findViewById(R.id.id_bottom_ly);
+        btnCancel = (Button) findViewById(R.id.btn_cancel);
+        btnOK = (Button) findViewById(R.id.btn_ok);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        btnOK.setText("完成" + "(" + Bimp.tempSelectBitmap.size() + "/" + 9 + ")");
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        tvLook = (TextView) findViewById(R.id.tv_look);
+        tvLook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Bimp.tempSelectBitmap.size() > 0) {
+                    Intent intent = new Intent();
+                    intent.putExtra("position", "1");
+                    intent.setClass(AlbumActivity.this, GalleryActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
 
